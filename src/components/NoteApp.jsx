@@ -50,15 +50,6 @@ class NotesApp extends React.Component {
         archived: false,
       };
 
-      console.log("Tipe data id:", typeof newNote.id);
-      console.log("Tipe data title:", typeof newNote.title);
-      console.log("Tipe data body:", typeof newNote.body);
-      console.log("Tipe data createdAt:", typeof newNote.createdAt);
-      console.log("Tipe data archived:", typeof newNote.archived);
-
-      // Log data baru sebelum ditambahkan ke state
-      console.log("Data Catatan Baru:", newNote);
-
       return {
         notes: [...prevState.notes, newNote],
       };
