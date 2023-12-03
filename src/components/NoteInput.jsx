@@ -7,7 +7,7 @@ class NoteInput extends React.Component {
     // inisialisasi state
     this.state = {
       title: "",
-      createdAt: "",
+      createdAt: new Date().toISOString(),
       body: "",
       archived: false,
     };
@@ -35,11 +35,15 @@ class NoteInput extends React.Component {
 
   onSubmitEventHandler(event) {
     event.preventDefault();
-    console.log("createdAt sebelum setState:", this.state.createdAt);
-    this.props.addNote({ ...this.state, archived: false });
+    this.props.addNote({
+      title: this.state.title,
+      createdAt: this.state.createdAt,
+      body: this.state.body,
+      archived: this.state.archived,
+    });
     this.setState({
       title: "",
-      createdAt: "",
+      createdAt: new Date().toISOString(),
       body: "",
       archived: false,
     });

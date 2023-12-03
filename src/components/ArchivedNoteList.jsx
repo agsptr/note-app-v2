@@ -4,7 +4,7 @@ import NoteItem from "./NoteItem";
 function ArchivedNoteList({ archivedNotes, onDelete }) {
   return (
     <div className="archived-notes-list">
-      <h2>Rak Arsip</h2>
+      <h2>Arsip</h2>
       {archivedNotes.length === 0 ? (
         <p>Tidak ada catatan diarsipkan.</p>
       ) : (

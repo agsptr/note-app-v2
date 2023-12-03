@@ -19,42 +19,42 @@ class NotesApp extends React.Component {
 
   onDeleteHandler(id) {
     const notes = this.state.notes.filter((note) => note.id !== id);
-    this.setState({ notes });
+    const archivedNotes = this.state.archivedNotes.filter(
+      (note) => note.id !== id
+    );
+    this.setState({ notes, archivedNotes });
   }
 
   onArchiveHandler(id) {
-    // Temukan catatan dengan ID yang sesuai
-    const noteToArchive = this.state.notes.find((note) => note.id === id);
-
-    // Pindahkan catatan ke rak archive
     this.setState((prevState) => {
+      const updatedNotes = prevState.notes.map((note) =>
+        note.id === id ? { ...note, archived: true } : note
+      );
+
+      const archivedNote = prevState.notes.find((note) => note.id === id);
+
       return {
-        notes: prevState.notes.filter((note) => note.id !== id),
-        archivedNotes: [
-          ...prevState.archivedNotes,
-          {
-            ...noteToArchive,
-            createdAt: +new Date(), // Simpan createdAt seperti ketika diarsipkan
-          },
-        ],
+        notes: updatedNotes,
+        archivedNotes: [...prevState.archivedNotes, archivedNote],
       };
     });
   }
 
-  onAddNoteHandler({ title, body }) {
+  onAddNoteHandler({ title, body, archived }) {
     this.setState((prevState) => {
       const newNote = {
         id: uuidv4(),
         title,
         body,
-        createdAt: +new Date(),
+        createdAt: new Date().toISOString(),
         archived: false,
       };
 
-      console.log("Tipe data title:", typeof title);
-      console.log("Tipe data body:", typeof body);
-      console.log("Tipe data crt:", typeof createdAt);
-      console.log("Tipe data arciv:", typeof archived);
+      console.log("Tipe data id:", typeof newNote.id);
+      console.log("Tipe data title:", typeof newNote.title);
+      console.log("Tipe data body:", typeof newNote.body);
+      console.log("Tipe data createdAt:", typeof newNote.createdAt);
+      console.log("Tipe data archived:", typeof newNote.archived);
 
       // Log data baru sebelum ditambahkan ke state
       console.log("Data Catatan Baru:", newNote);
@@ -65,23 +65,6 @@ class NotesApp extends React.Component {
     });
   }
 
-  //   onAddNoteHandler({ title, body }) {
-  //     this.setState((prevState) => {
-  //       return {
-  //         notes: [
-  //           ...prevState.notes,
-  //           {
-  //             id: uuidv4(),
-  //             title,
-  //             createdAt: +new Date(),
-  //             body,
-  //             archived: false,
-  //           },
-  //         ],
-  //       };
-  //     });
-  //   }
-
   render() {
     return (
       <div className="note-app">
@@ -91,7 +74,7 @@ class NotesApp extends React.Component {
         <div className="note-app__body">
           <NoteInput addNote={this.onAddNoteHandler} />
           <NoteList
-            notes={this.state.notes}
+            notes={this.state.notes.filter((note) => !note.archived)}
             onDelete={this.onDeleteHandler}
             onArchive={this.onArchiveHandler}
           />
